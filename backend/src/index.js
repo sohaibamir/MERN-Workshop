@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cors());
 
-// routes middleware
+// available routes 
 app.use("/api", userRoutes);
 app.use("/api", bookRoutes);
 app.use("/api", studentRoutes);
