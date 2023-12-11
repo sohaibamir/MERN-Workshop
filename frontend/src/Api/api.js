@@ -1,14 +1,14 @@
 import axios from "axios";
 
 export async function loginApi(email, password) {
-  return axios.post(`${process.env.REACT_APP_API}/user/login`, {
+  return axios.post(`${process.env.REACT_APP_API}/login`, {
     email,
     password,
   });
 }
 
 export async function signupApi(name, email, password) {
-  return axios.post(`${process.env.REACT_APP_API}/user/signup`, {
+  return axios.post(`${process.env.REACT_APP_API}/signup`, {
     name,
     email,
     password,
@@ -59,7 +59,7 @@ export async function deleteStudent(id) {
 }
 
 export async function getAllRecords() {
-  return axios.get(`${process.env.REACT_APP_API}/record`);
+  return axios.get(`${process.env.REACT_APP_API}/records`);
 }
 
 export async function createRecord(

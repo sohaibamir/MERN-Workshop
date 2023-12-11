@@ -1,36 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./books.module.css";
 import Table from "../../Components/Table";
 import Header from "../../Components/Header";
 import { useLanguage } from "../../Context/languageContext";
 import CustomButton from "../../Components/CustomButton";
 import CustomModal from "../../Modals";
+import { getAllBooks } from "../../Api/api";
 
 const Books = () => {
   const { language } = useLanguage();
   const [openModal, setOpenModal] = useState(false);
-  const [tableData, setTableData] = useState([
-    { ID: 1, Name: "The Catcher in the Rye", Status: "available", Version: 1 },
-    { ID: 2, Name: "To Kill a Mockingbird", Status: "borrowed", Version: 2 },
-    { ID: 3, Name: "1984", Status: "available", Version: 1 },
-    { ID: 4, Name: "The Great Gatsby", Status: "available", Version: 1 },
-    {
-      ID: 5,
-      Name: "One Hundred Years of Solitude",
-      Status: "borrowed",
-      Version: 2,
-    },
-    { ID: 6, Name: "Brave New World", Status: "available", Version: 1 },
-    { ID: 7, Name: "The Lord of the Rings", Status: "available", Version: 1 },
-    { ID: 8, Name: "Pride and Prejudice", Status: "borrowed", Version: 2 },
-    { ID: 9, Name: "The Hobbit", Status: "available", Version: 1 },
-    {
-      ID: 10,
-      Name: "Harry Potter and the Sorcerer's Stone",
-      Status: "available",
-      Version: 1,
-    },
-  ]);
+  const [tableData, setTableData] = useState([]);
 
   const [formData, setFormData] = useState({
     ID: "",
@@ -59,6 +39,13 @@ const Books = () => {
     let updatedData = tableData.filter((x) => x.ID != data.ID);
     setTableData(updatedData);
   };
+
+  useEffect(() => {
+    getAllBooks().then((res) => {
+      console.log('res.data', res.data);
+      setTableData(res.data);
+    });
+  }, []);
 
   return (
     <>

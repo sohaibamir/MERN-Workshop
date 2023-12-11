@@ -28,11 +28,10 @@ const Table = ({ tableHeader, tableData, onDelete }) => {
 
       </thead>
       <tbody>
-        {tableData?.map((row, rowIndex) => (
+        {tableData?.map(({ _id, createdAt, updatedAt, __v, ...row }, rowIndex) => (
           <tr key={rowIndex}>
             {Object.values(row)?.map((value) => {
-              if (row?.ID === editRowID ) {
-                console.log("HERE")
+              if (row?.ID === editRowID) {
                 return (
                   <td contentEditable >{value}</td>
                 )

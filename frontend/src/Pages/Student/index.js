@@ -1,25 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLanguage } from '../../Context/languageContext';
 import Table from '../../Components/Table';
 import Header from '../../Components/Header';
 import styles from "./students.module.css"
 import CustomButton from '../../Components/CustomButton';
 import CustomModal from '../../Modals';
+import { getAllStudents } from '../../Api/api';
 
 const Students = () => {
     const { language } = useLanguage()
     const [openModal, setOpenModal] = useState(false);
-    const [tableData, setTableData] = useState([
-        { ID: 1, department: 'Snow', name: 'Jon', rollNo: 35, year: 'TE' },
-        { ID: 2, department: 'Lannister', name: 'Cersei', rollNo: 42, year: 'TE' },
-        { ID: 3, department: 'Lannister', name: 'Jaime', rollNo: 45, year: 'TE' },
-        { ID: 4, department: 'Stark', name: 'Arya', rollNo: 16, year: 'TE' },
-        { ID: 5, department: 'Targaryen', name: 'Daenerys', rollNo: 20, year: 'TE' },
-        { ID: 6, department: 'Melisandre', name: 'Test', rollNo: 150, year: 'TE' },
-        { ID: 7, department: 'Clifford', name: 'TErrara', rollNo: 44, year: 'TE' },
-        { ID: 8, department: 'Frances', name: 'Rossini', rollNo: 36, year: 'TE' },
-        { ID: 9, department: 'Roxie', name: 'Harvey', rollNo: 65, year: 'TE' },
-    ])
+    const [tableData, setTableData] = useState([]);
 
     const [formData, setFormData] = useState({
         ID: '',
@@ -32,7 +23,7 @@ const Students = () => {
 
     const handleSubmit = () => {
         console.log('Form submitted:', formData);
-        setTableData(prev=>[...prev, formData])
+        setTableData(prev => [...prev, formData])
         setOpenModal(false)
     };
 
@@ -42,9 +33,16 @@ const Students = () => {
     const tableHeader = ['ID', 'Department', 'Name', 'Roll Number', 'Year', 'Actions'];
 
     const onDelete = (data) => {
-        let updatedData = tableData.filter(x=>x.ID != data.ID)
+        let updatedData = tableData.filter(x => x.ID != data.ID)
         setTableData(updatedData)
     }
+
+    useEffect(() => {
+        getAllStudents().then((res) => {
+            console.log('students', res.data);
+            setTableData(res.data);
+        })
+    }, []);
 
     return (
         <>

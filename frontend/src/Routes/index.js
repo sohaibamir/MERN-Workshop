@@ -7,7 +7,6 @@ import Books from '../Pages/Books';
 import Records from '../Pages/Record';
 import Students from '../Pages/Student';
 
-
 const MainRoutes = () => {
     return (
         <BrowserRouter>
