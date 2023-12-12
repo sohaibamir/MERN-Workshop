@@ -14,6 +14,16 @@ const Students = () => {
     const [tableData, setTableData] = useState([]);
     const [isStudentChanged, setIsStudentChanged] = useState(false);
 
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        getAllStudents().then((res) => {
+            console.log('students', res.data);
+            setTableData(res.data);
+        })
+    }, [isStudentChanged]);
+
+
     const [formData, setFormData] = useState({
         ID: '',
         department: '',
@@ -24,12 +34,15 @@ const Students = () => {
     });
 
     const [updateTableData, setUpdateTableData] = useState({
-        id: '',
-        department: '',
-        name: '',
-        roll_no: '',
-        year: '',
+        id: tableData[index]?.id,
+        department: tableData[index]?.department,
+        name: tableData[index]?.name,
+        roll_no: tableData[index]?.roll_no,
+        year: tableData[index]?.year,
     });
+
+    console.log('index', updateTableData);
+    console.log('id', tableData[index].id);
 
     const handleSubmit = () => {
         console.log('Form submitted:', formData);
@@ -79,13 +92,6 @@ const Students = () => {
         })
     }
 
-    useEffect(() => {
-        getAllStudents().then((res) => {
-            console.log('students', res.data);
-            setTableData(res.data);
-        })
-    }, [isStudentChanged]);
-
     return (
         <>
             <Header />
@@ -95,7 +101,7 @@ const Students = () => {
                     <CustomButton btnLabel="Add student" onClick={() => setOpenModal(true)} />
                 </div>
 
-                <Table updateTableData={updateTableData} setUpdateTableData={setUpdateTableData} tableHeader={tableHeader} tableData={tableData} onDelete={onDelete} editRecord={onEdit} />
+                <Table setIndex={setIndex} updateTableData={updateTableData} setUpdateTableData={setUpdateTableData} tableHeader={tableHeader} tableData={tableData} onDelete={onDelete} editRecord={onEdit} />
                 <ToastContainer />
             </div>
             {openModal && <CustomModal formName={'students'} onClose={onModalClose} formData={formData} setFormData={setFormData} handleSubmit={handleSubmit} />}

@@ -21,7 +21,7 @@ function Login() {
         else {
             loginApi(email, password).then((res) => {
                 console.log('res', res);
-                const toas = toast.success("Logged In Successfully!", {
+                toast.success("Logged In Successfully!", {
                     position: toast.POSITION.TOP_CENTER,
                 })
                 navigate('/home');

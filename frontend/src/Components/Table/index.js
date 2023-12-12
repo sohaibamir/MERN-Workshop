@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import styles from './table.module.css';
 import { MdDelete, MdDone, MdEdit } from 'react-icons/md';
-import CustomModal from '../../Modals';
 
-const Table = ({ tableHeader, tableData, onDelete, editRecord, updateTableData, setUpdateTableData }) => {
+const Table = ({ setIndex, tableHeader, tableData, onDelete, editRecord, updateTableData, setUpdateTableData }) => {
 
   const [editRowID, setEditRowID] = useState(null);
 
-  const onEdit = (data) => {
-    setEditRowID(data?.id);
+
+  const onEdit = (id) => {
+    setEditRowID(id);
+    setIndex(id - 1);
   }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (key, e) => {
     setUpdateTableData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [key]: e.target.innerHTML,
     }));
   };
 
@@ -45,13 +45,13 @@ const Table = ({ tableHeader, tableData, onDelete, editRecord, updateTableData, 
               }
               else {
                 return (
-                  <td>{row[key]}</td>
+                  <td contentEditable={row?.id === editRowID ? true : false} onKeyUp={(e) => handleChange(key, e)}>{row[key]}</td>
                 )
               }
             })}
             <td className={styles.actionsColumn}>
               <MdDelete onClick={() => onDelete(_id)} />
-              <MdEdit onClick={() => onEdit(_id)} />
+              <MdEdit onClick={() => onEdit(row?.id)} />
             </td>
           </tr>
         ))}
