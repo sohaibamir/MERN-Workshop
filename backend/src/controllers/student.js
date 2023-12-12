@@ -29,7 +29,7 @@ exports.createStudent = async (req, res) => {
 exports.deleteStudent = async (req, res) => {
   try {
     const { id } = req.body;
-    console.log('req.body:', req.body)
+    console.log("req.body:", req.body);
     const deletedStudent = await Student.findByIdAndDelete(id);
     if (!deletedStudent) {
       return res.status(404).json({ message: "Student not found" });
@@ -42,9 +42,11 @@ exports.deleteStudent = async (req, res) => {
 
 exports.updateStudent = async (req, res) => {
   try {
-    const { _id, ...reqBody } = req.body;
-    console.log('backend id', id);
-    const updatedStudent = await Student.findByIdAndUpdate({ _id }, { $set: reqBody }, { new: true, runValidators: true });
+    const { _id } = req.body;
+    const updatedStudent = await Student.findByIdAndUpdate(_id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     res.json({
       message: "Student updated successfully",

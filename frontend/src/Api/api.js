@@ -1,14 +1,14 @@
 import axios from "axios";
 
 export async function loginApi(email, password) {
-  return axios.post(`${process.env.REACT_APP_API}/login`, {
+  return axios.post(`${process.env.REACT_APP_API}/user/login`, {
     email,
     password,
   });
 }
 
 export async function signupApi(name, email, password) {
-  return axios.post(`${process.env.REACT_APP_API}/signup`, {
+  return axios.post(`${process.env.REACT_APP_API}/user/signup`, {
     name,
     email,
     password,
@@ -50,17 +50,16 @@ export async function createStudent(id, department, name, roll_no, year) {
   });
 }
 
-export async function updateStudent(id) {
-  return axios.put(`${process.env.REACT_APP_API}/update/student`, { id });
+export async function updateStudent(_id) {
+  return axios.put(`${process.env.REACT_APP_API}/update/student`, { _id });
 }
 
 export async function deleteStudent(id) {
-  console.log('line 58 id', id);
   return axios.delete(`${process.env.REACT_APP_API}/delete/student`, { id });
 }
 
 export async function getAllRecords() {
-  return axios.get(`${process.env.REACT_APP_API}/records`);
+  return axios.get(`${process.env.REACT_APP_API}/record`);
 }
 
 export async function createRecord(
