@@ -21,10 +21,10 @@ function Login() {
         else {
             loginApi(email, password).then((res) => {
                 console.log('res', res);
-                toast.success("Logged In Successfully!", {
+                const toas = toast.success("Logged In Successfully!", {
                     position: toast.POSITION.TOP_CENTER,
                 })
-                navigate('/home')
+                navigate('/home');
             }).catch((error) => console.log(error));
         }
     };

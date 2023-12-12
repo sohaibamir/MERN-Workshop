@@ -20,48 +20,7 @@ const CustomModal = ({ onClose, formName, formData, setFormData, handleSubmit })
                     <ImCross />
                 </span>
                 {formName === 'books' ?
-                 <form>
-                    <label>
-                        ID:
-                        <input
-                            type="text"
-                            name="ID"
-                            value={formData.ID}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <label>
-                        Name:
-                        <input
-                            type="text"
-                            name="Name"
-                            value={formData.Name}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <label>
-                        Status:
-                        <input
-                            type="text"
-                            name="Status"
-                            value={formData.Status}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <label>
-                        Version:
-                        <input
-                            type="text"
-                            name="Version"
-                            value={formData.Version}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <CustomButton btnLabel={'Submit'} onClick={handleSubmit} />
-                </form> 
-                :
-                formName === 'records' ? 
-                    <form>
+                    <div>
                         <label>
                             ID:
                             <input
@@ -75,8 +34,8 @@ const CustomModal = ({ onClose, formName, formData, setFormData, handleSubmit })
                             Name:
                             <input
                                 type="text"
-                                name="bookName"
-                                value={formData.bookName}
+                                name="Name"
+                                value={formData.Name}
                                 onChange={handleChange}
                             />
                         </label>
@@ -90,35 +49,76 @@ const CustomModal = ({ onClose, formName, formData, setFormData, handleSubmit })
                             />
                         </label>
                         <label>
-                            Student ID:
+                            Version:
                             <input
                                 type="text"
-                                name="studentId"
-                                value={formData.studentId}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            Issue Date:
-                            <input
-                                type="text"
-                                name="issueDate"
-                                value={formData.issueDate}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            Return Date:
-                            <input
-                                type="text"
-                                name="returnDate"
-                                value={formData.returnDate}
+                                name="Version"
+                                value={formData.Version}
                                 onChange={handleChange}
                             />
                         </label>
                         <CustomButton btnLabel={'Submit'} onClick={handleSubmit} />
-                    </form> :
-                        <form>
+                    </div>
+                    :
+                    formName === 'records' ?
+                        <div>
+                            <label>
+                                ID:
+                                <input
+                                    type="text"
+                                    name="ID"
+                                    value={formData.ID}
+                                    onChange={handleChange}
+                                />
+                            </label>
+                            <label>
+                                Name:
+                                <input
+                                    type="text"
+                                    name="bookName"
+                                    value={formData.bookName}
+                                    onChange={handleChange}
+                                />
+                            </label>
+                            <label>
+                                Status:
+                                <input
+                                    type="text"
+                                    name="Status"
+                                    value={formData.Status}
+                                    onChange={handleChange}
+                                />
+                            </label>
+                            <label>
+                                Student ID:
+                                <input
+                                    type="text"
+                                    name="studentId"
+                                    value={formData.studentId}
+                                    onChange={handleChange}
+                                />
+                            </label>
+                            <label>
+                                Issue Date:
+                                <input
+                                    type="text"
+                                    name="issueDate"
+                                    value={formData.issueDate}
+                                    onChange={handleChange}
+                                />
+                            </label>
+                            <label>
+                                Return Date:
+                                <input
+                                    type="text"
+                                    name="returnDate"
+                                    value={formData.returnDate}
+                                    onChange={handleChange}
+                                />
+                            </label>
+                            <CustomButton btnLabel={'Submit'} onClick={handleSubmit} />
+                        </div> :
+                        <div>
                             <label>
                                 ID:
                                 <input
@@ -164,8 +164,8 @@ const CustomModal = ({ onClose, formName, formData, setFormData, handleSubmit })
                                     onChange={handleChange}
                                 />
                             </label>
-                            <CustomButton btnLabel={'Submit'} onClick={handleSubmit}/>
-                        </form>}
+                            <CustomButton btnLabel={'Submit'} onClick={handleSubmit} />
+                        </div>}
             </div>
         </div>
     );

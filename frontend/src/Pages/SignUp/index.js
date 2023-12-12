@@ -25,7 +25,7 @@ function SignUp() {
         toast.success("Student Registered Successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
-        navigate('/home');
+        navigate('/');
       }).catch((error) => {
         console.log(error);
       })
