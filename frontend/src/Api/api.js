@@ -33,7 +33,7 @@ export async function updateBook(_id) {
 }
 
 export async function deleteBook(id) {
-  return axios.delete(`${process.env.REACT_APP_API}/delete/book`, { id });
+  return axios.delete(`${process.env.REACT_APP_API}/delete/book`, JSON.stringify({ id }));
 }
 
 export async function getAllStudents() {
@@ -59,7 +59,7 @@ export async function deleteStudent(id) {
 }
 
 export async function getAllRecords() {
-  return axios.get(`${process.env.REACT_APP_API}/record`);
+  return axios.get(`${process.env.REACT_APP_API}/records`);
 }
 
 export async function createRecord(

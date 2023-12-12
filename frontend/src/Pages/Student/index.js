@@ -52,17 +52,26 @@ const Students = () => {
     }
     const tableHeader = ['ID', 'Department', 'Name', 'Roll Number', 'Year', 'Actions'];
 
-    const onDelete = (id) => {
-        deleteStudent(id).then((res) => {
-            console.log('res', res);
-            setIsStudentChanged((prev) => !prev);
-            toast.success('Student Deleted Successfully!', {
-                position: toast.POSITION.TOP_CENTER
-            })
-        }).catch((error) => {
-            console.log(error);
-        })
-    }
+    const onDelete = async (id) => {
+        const response = await fetch(`${process.env.REACT_APP_API}/delete/student`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error deleting student. Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(result);
+        setIsStudentChanged(true);
+        toast.success("Deleted Successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+        });
+    };
 
     const onEdit = (data) => {
         updateStudent(data?.id).then((res) => {

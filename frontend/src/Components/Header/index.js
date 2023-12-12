@@ -6,16 +6,16 @@ import CustomButton from '../CustomButton';
 
 const Header = () => {
 
-    const {language, changeLanguage} = useLanguage()
+    const { language, changeLanguage } = useLanguage()
 
     return (
 
         <div className={styles.headerContainer}>
             <Link to='/books'>{language.books}</Link>
-            <Link to='/records'>{language.records}</Link>
             <Link to='/students'>{language.students}</Link>
+            <Link to='/records'>{language.records}</Link>
             <div className={styles.language} >
-                <CustomButton onClick={() => changeLanguage('en')} btnLabel="English"  />
+                <CustomButton onClick={() => changeLanguage('en')} btnLabel="English" />
                 <CustomButton onClick={() => changeLanguage('ur')} btnLabel="Urdu" />
             </div>
         </div>

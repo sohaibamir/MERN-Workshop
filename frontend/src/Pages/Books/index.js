@@ -5,12 +5,14 @@ import Header from "../../Components/Header";
 import { useLanguage } from "../../Context/languageContext";
 import CustomButton from "../../Components/CustomButton";
 import CustomModal from "../../Modals";
-import { getAllBooks } from "../../Api/api";
+import { createBook, deleteBook, getAllBooks } from "../../Api/api";
+import { toast, ToastContainer } from "react-toastify";
 
 const Books = () => {
   const { language } = useLanguage();
   const [openModal, setOpenModal] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [isBookChanged, setIsBookChanged] = useState(false);
 
   const [formData, setFormData] = useState({
     ID: "",
@@ -25,19 +27,46 @@ const Books = () => {
   });
 
   const handleSubmit = () => {
-    console.log("Form submitted:", formData);
-    setTableData((prev) => [...prev, formData]);
+    console.log('Form submitted:', formData);
+    createBook(formData?.ID, formData?.Name, formData?.Status, formData?.Version).then((res) => {
+      console.log('res of books', res.data?.book);
+      setIsBookChanged((prev) => !prev);
+      setTableData([...tableData, res?.data?.book]);
+      toast.success("Student Added Successfully!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }).catch((err) => {
+      console.log(err);
+    })
     setOpenModal(false);
+    setIsBookChanged(true);
   };
+
   const onModalClose = () => {
     setOpenModal((prev) => !prev);
   };
 
   const tableHeader = ["ID", "Name", "Status", "Version", "Actions"];
 
-  const onDelete = (data) => {
-    let updatedData = tableData.filter((x) => x.ID != data.ID);
-    setTableData(updatedData);
+  const onDelete = async (id) => {
+    const response = await fetch(`${process.env.REACT_APP_API}/delete/book`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error deleting book. Status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log(result);
+    setIsBookChanged(true);
+    toast.success("Deleted Successfully!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
 
   useEffect(() => {
@@ -45,7 +74,7 @@ const Books = () => {
       console.log('res.data', res.data);
       setTableData(res.data);
     });
-  }, []);
+  }, [isBookChanged]);
 
   return (
     <>
@@ -63,6 +92,7 @@ const Books = () => {
           tableData={tableData}
           onDelete={onDelete}
         />
+        <ToastContainer />
       </div>
       {openModal && (
         <CustomModal

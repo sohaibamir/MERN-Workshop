@@ -5,25 +5,15 @@ import Header from '../../Components/Header';
 import styles from "./records.module.css"
 import CustomButton from '../../Components/CustomButton';
 import CustomModal from '../../Modals';
-import { getAllRecords } from '../../Api/api';
+import { createRecord, getAllRecords } from '../../Api/api';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Records = () => {
     const { language } = useLanguage()
-    // const [tableData, setTableData] = useState([
-    //     { ID: 1, bookName: 'The Catcher in the Rye', Status: 'active', studentId: 1, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    //     { ID: 2, bookName: 'To Kill a Mockingbird', Status: 'inactive', studentId: 2, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    //     { ID: 3, bookName: '1984', Status: 'active', studentId: 1, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    //     { ID: 4, bookName: 'The Great Gatsby', Status: 'active', studentId: 1, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    //     { ID: 5, bookName: 'One Hundred Years of Solitude', Status: 'inactive', studentId: 2, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    //     { ID: 6, bookName: 'Brave New World', Status: 'active', studentId: 1, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    //     { ID: 7, bookName: 'The Lord of the Rings', Status: 'active', studentId: 1, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    //     { ID: 8, bookName: 'Pride and Prejudice', Status: 'inactive', studentId: 2, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    //     { ID: 9, bookName: 'The Hobbit', Status: 'active', studentId: 1, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    //     { ID: 10, bookName: 'Harry Potter and the Sorcerer\'s Stone', Status: 'active', studentId: 1, issueDate: '15/12/2023', returnDate: "30/12/2023" },
-    // ])
     const [tableData, setTableData] = useState([]);
 
     const [openModal, setOpenModal] = useState(false);
+    const [isRecordChanged, setIsRecordChanged] = useState(false);
 
     const [formData, setFormData] = useState({
         ID: '',
@@ -39,15 +29,41 @@ const Records = () => {
     }
     const tableHeader = ['ID', 'Name', 'Status', 'Student ID', 'Issue Date', 'Return Date', 'Actions'];
 
-    const onDelete = (data) => {
-        let updatedData = tableData.filter(x => x.ID != data.ID)
-        setTableData(updatedData)
-    }
+    const onDelete = async (id) => {
+        const response = await fetch(`${process.env.REACT_APP_API}/delete/record`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error deleting book. Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(result);
+        setIsRecordChanged(true);
+        toast.success("Deleted Successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+        });
+    };
 
     const handleSubmit = () => {
         console.log('Form submitted:', formData);
-        setTableData(prev => [...prev, formData])
-        setOpenModal(false)
+        createRecord(formData?.ID, formData?.bookName, formData?.status, formData?.studentId, formData?.issueDate, formData?.returnDate).then((res) => {
+            console.log('res of books', res.data?.book);
+            setIsRecordChanged((prev) => !prev);
+            setTableData([...tableData, res?.data?.record]);
+            toast.success("Student Added Successfully!", {
+                position: toast.POSITION.TOP_CENTER,
+            });
+        }).catch((err) => {
+            console.log(err);
+        })
+        setOpenModal(false);
+        setIsRecordChanged(true);
     };
 
     useEffect(() => {
@@ -55,7 +71,7 @@ const Records = () => {
             console.log('records', res.data);
             setTableData(res.data);
         })
-    }, []);
+    }, [isRecordChanged]);
 
     return (
         <>
@@ -66,6 +82,7 @@ const Records = () => {
                     <CustomButton btnLabel="Add record" onClick={() => setOpenModal(true)} />
                 </div>
                 <Table tableHeader={tableHeader} tableData={tableData} onDelete={onDelete} />
+                <ToastContainer />
             </div>
             {openModal && <CustomModal formName={'records'} onClose={onModalClose} formData={formData} setFormData={setFormData} handleSubmit={handleSubmit} />}
         </>
