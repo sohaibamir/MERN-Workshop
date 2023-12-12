@@ -1,0 +1,23 @@
+First rename your react folder to frontend
+Create a new folder outside the frontend folder and name it backend
+
+Run the following command inside backend folder
+npm i nodemon mongoose morgan express body-parser cors dotenv
+
+Make .env file inside backend folder and create these two variables
+DATABASE='mongodb+srv://sohaib:sohaib123456@cluster0.afvnwpy.mongodb.net/mern-workshop'
+PORT=8000
+
+Add this line in your package.json file 
+"scripts": {
+   "start": "nodemon src/index.js"
+}
+
+we're setting up a Node.js server using Express and integrating various middleware like mongoose, body-parser, cors, morgan, and dotenv for environment variables. Here's a brief overview of what each of these does:
+
+Express: A web application framework for Node.js used to build web applications and APIs.
+Mongoose: An ODM (Object Data Modeling) library for MongoDB and Node.js. It provides a straightforward schema-based solution for modeling application data.
+Body-parser: Middleware used to parse incoming request bodies in a middleware before your handlers, available under req.body.
+Cors: Middleware used to enable Cross-Origin Resource Sharing, allowing restricted resources on a web page to be requested from another domain.
+Morgan: HTTP request logger middleware for Node.js, used to log requests to the server for debugging.
+Dotenv: A zero-dependency module that loads environment variables from a .env file into process.env.
